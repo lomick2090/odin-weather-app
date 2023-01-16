@@ -24,9 +24,11 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "style-loader": "^3.3.1",
-    "webpack": "^5.75.0"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@types/node": "^18.11.18",
     "abbrev": "^1.1.1",
     "acorn": "^8.8.1",
     "acorn-import-assertions": "^1.8.0",
@@ -95,6 +97,7 @@
     "defaults": "^1.0.4",
     "delegates": "^1.0.0",
     "depd": "^1.1.2",
+    "dependencies": "^0.0.1",
     "deprecation": "^2.3.1",
     "dezalgo": "^1.0.4",
     "diff": "^5.1.0",
@@ -359,7 +362,6 @@
     "watchpack": "^2.4.0",
     "wcwidth": "^1.0.1",
     "webidl-conversions": "^3.0.1",
-    "webpack-cli": "^5.0.1",
     "webpack-merge": "^5.8.0",
     "webpack-sources": "^3.2.3",
     "whatwg-url": "^5.0.0",
