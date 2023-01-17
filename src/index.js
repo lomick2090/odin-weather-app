@@ -12,28 +12,56 @@ async function getSearchData(city) {
 
 function parseData(data) {
     let dataObj = [];
-    for (let i = 2; i <= 8; i+2) {
-        let dayArray = [];
+    let dayArray = [];
+
+    function compileData(data, i) {
         let day = {};
         day.time = data.list[i].dt_txt;
         day.tempHigh = data.list[i].main.temp_max;
         day.tempLow = data.list[i].main.temp_min;
         day.weather = data.list[i].weather[0].main;
         day.weatherDesc = data.list[i].weather[0].description;
-
         dayArray.push(day);
+    }
 
-        if (i = 8) {
+    for (let i = 2; i <= 8; i = i+2) {
+        compileData(data, i);
+        if (i == 8) {
             dataObj.push(dayArray);
+            dayArray = [];
+        }
+    }
+        
+    for (let i = 10; i <= 16; i = i+2) {
+        compileData(data, i);
+        if (i == 16) {
+            dataObj.push(dayArray);
+            dayArray = [];
         }
     }
 
-    console.log(dataObj);
+    for (let i = 18; i <= 24; i = i+2) {
+        compileData(data, i);
+        if (i == 24) {
+            dataObj.push(dayArray);
+            dayArray = [];
+        }
+    }
+
+    for (let i = 26; i <= 32; i = i+2) {
+        compileData(data, i);
+        if (i == 32) {
+            dataObj.push(dayArray);
+            dayArray = [];
+        }
+    }
+
+    return dataObj;
 }
 
 submitButton.addEventListener('click', async function() { 
     let data = await getSearchData(searchInput.value)
-    parseData(data)
+    dataObj = parseData(data)
     });
 
 
