@@ -17,8 +17,9 @@ function parseData(data) {
         day.time = data.list[i].dt_txt;
         day.tempHigh = data.list[i].main.temp_max;
         day.tempLow = data.list[i].main.temp_min;
-        day.weather = data.list[i].weather[0].main;
+        day.weather = data.list[i].weather[0].icon;
         day.weatherDesc = data.list[i].weather[0].description;
+        console.log(day);
         dayArray.push(day);
     }
 
@@ -57,7 +58,7 @@ function parseData(data) {
         //finds most common weather for the day
         let mf = 1;
         let m = 0;
-        let commonWeather;
+        let commonWeather = weatherArray[2];
         for (let i=0; i<weatherArray.length; i++)
         {
                 for (let j=i; j<weatherArray.length; j++)
@@ -123,6 +124,9 @@ function parseData(data) {
 }
 
 function populateApp(data) {
+    while (forecast.firstChild) {
+        forecast.firstChild.remove();
+    }
     for (let i = 0; i <= 3; i++) {
         let newDay = document.createElement('div');
         newDay.className = 'day';
@@ -133,6 +137,7 @@ function populateApp(data) {
 
         let weatherImg = document.createElement('img');
         weatherImg.className = 'dayimg';
+        weatherImg.src = `https://openweathermap.org/img/wn/${data[i].weather}@2x.png`;
         //switch to choose weather img
 
         let tempDiv = document.createElement('div');

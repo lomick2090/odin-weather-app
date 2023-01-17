@@ -1,14 +1,36 @@
 body {
     margin: 0px;
-    background-color: black;
-    height: 100vh;
-    width: 100vw;
     color: white;
-    display:grid;
-    justify-content: center;
 }
+
+.page {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 300px
+}
+
 
 .forecast {
     display:flex;
+    gap: 120px;
+}
+
+.day {
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dayimg {
+    height:120px;
+    width:120px;
+    border: 1px solid white;
+}
+
+.tempdiv {
+    display: flex;
+    justify-content: space-between;
     gap: 40px;
 }
