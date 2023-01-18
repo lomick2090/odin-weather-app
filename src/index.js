@@ -2,7 +2,7 @@ const submitButton = document.querySelector('button');
 const searchInput = document.getElementById('city');
 const forecast = document.querySelector('.forecast')
 
-async function getSearchData(city) {
+async function getFiveDayData(city) {
     let data = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=b5a14a7cc940d71738c874058413abb4`)
         .then(response => {
             return response.json();
@@ -11,7 +11,34 @@ async function getSearchData(city) {
     return data;
 }
 
-function parseData(data) {
+async function getCurrentDayData(city) {
+    let data = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=b5a14a7cc940d71738c874058413abb4`)
+        .then(response => {
+            return response.json();
+        
+        })
+    
+    return data;
+}
+
+
+function parseCurrentDayData(data) {
+
+    let date = 'today';
+    let tempLow = `${Math.round(data.main.temp_min)}°`;
+    let tempHigh = `${Math.round(data.main.temp_max)}°`;
+    let weather = data.weather[0].icon;
+
+    return {
+        date,
+        tempLow,
+        tempHigh,
+        weather
+    }
+
+}
+
+function parseFiveDayData(data) {
     function compileData(data, i) {
         let day = {};
         day.time = data.list[i].dt_txt;
@@ -19,7 +46,6 @@ function parseData(data) {
         day.tempLow = data.list[i].main.temp_min;
         day.weather = data.list[i].weather[0].icon;
         day.weatherDesc = data.list[i].weather[0].description;
-        console.log(day);
         dayArray.push(day);
     }
 
@@ -75,8 +101,8 @@ function parseData(data) {
         }
 
         return {date: date, 
-            tempLow: lowTemp, 
-            tempHigh: highTemp, 
+            tempLow: `${Math.round(lowTemp)}°`, 
+            tempHigh: `${Math.round(highTemp)}°`, 
             weather:commonWeather}
 
     }
@@ -127,7 +153,7 @@ function populateApp(data) {
     while (forecast.firstChild) {
         forecast.firstChild.remove();
     }
-    for (let i = 0; i <= 3; i++) {
+    for (let i = 0; i < data.length; i++) {
         let newDay = document.createElement('div');
         newDay.className = 'day';
 
@@ -138,7 +164,6 @@ function populateApp(data) {
         let weatherImg = document.createElement('img');
         weatherImg.className = 'dayimg';
         weatherImg.src = `https://openweathermap.org/img/wn/${data[i].weather}@2x.png`;
-        //switch to choose weather img
 
         let tempDiv = document.createElement('div');
         tempDiv.className = 'tempdiv';
@@ -159,8 +184,11 @@ function populateApp(data) {
 
 submitButton.addEventListener('click', async function() { 
     try {
-        let data = await getSearchData(searchInput.value);
-        dataObj = parseData(data);
+        let data = await Promise.all([getFiveDayData(searchInput.value), getCurrentDayData(searchInput.value)])
+
+        let dataObj = parseFiveDayData(data[0]);
+        let currentDayDataObj = parseCurrentDayData(data[1]);
+        dataObj.unshift(currentDayDataObj)
         console.log(dataObj)
         populateApp(dataObj);
     } catch(err) {
@@ -170,11 +198,10 @@ submitButton.addEventListener('click', async function() {
 
 
 
-// fetch('https://api.openweathermap.org/data/2.5/forecast?q=chicago&units=imperial&appid=b5a14a7cc940d71738c874058413abb4')
+// fetch('https://api.openweathermap.org/data/2.5/weather?q=chicago&units=imperial&appid=b5a14a7cc940d71738c874058413abb4')
 //     .then(response => {
 //         return response.json()
 //     })
 //     .then(data => {
 //         console.log(data);
-//         console.log(data.list[0])
 //     });
