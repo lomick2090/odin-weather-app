@@ -215,7 +215,7 @@ document.addEventListener('submit', async function(e) {
         } else {
             populateApp(dataObj);
         }
-        
+
         document.querySelector('.errormessage').innerHTML = '';
     } catch(err) {
         document.querySelector('.errormessage').innerHTML = `Location not found.
@@ -226,12 +226,3 @@ document.addEventListener('submit', async function(e) {
 units.forEach(unit => {
     unit.addEventListener('change', changeUnit)
 }); 
-
-
-// fetch('https://api.openweathermap.org/data/2.5/weather?q=chicago&units=imperial&appid=b5a14a7cc940d71738c874058413abb4')
-//     .then(response => {
-//         return response.json()
-//     })
-//     .then(data => {
-//         console.log(data);
-//     });
