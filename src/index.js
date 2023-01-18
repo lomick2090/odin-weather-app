@@ -1,6 +1,7 @@
-const submitButton = document.querySelector('button');
 const searchInput = document.getElementById('city');
 const forecast = document.querySelector('.forecast');
+const units = document.getElementsByName('unit');
+let dataObj = [];
 
 async function getFiveDayData(city) {
     let data = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=b5a14a7cc940d71738c874058413abb4`)
@@ -21,12 +22,27 @@ async function getCurrentDayData(city) {
     return data;
 }
 
+function changeUnit() {
+    if (units[0].checked) {
+        for (let day of dataObj) {
+            day.tempLow = (day.tempLow * (9/5)) + 32
+            day.tempHigh = (day.tempHigh * (9/5)) + 32
+        }
+    } else if (units[1].checked) {
+        for (let day of dataObj) {
+            day.tempLow = (day.tempLow - 32) * (5/9)
+            day.tempHigh = (day.tempHigh -32) * (5/9)
+        }
+    }
+
+    populateApp(dataObj);
+}
 
 function parseCurrentDayData(data) {
 
     let date = 'Today';
-    let tempLow = `${Math.round(data.main.temp_min)}°`;
-    let tempHigh = `${Math.round(data.main.temp_max)}°`;
+    let tempLow = data.main.temp_min;
+    let tempHigh = data.main.temp_max;
     let weather = data.weather[0].icon;
 
     return {
@@ -100,10 +116,12 @@ function parseFiveDayData(data) {
                 m=0;
         }
 
-        return {date: date, 
-            tempLow: `${Math.round(lowTemp)}°`, 
-            tempHigh: `${Math.round(highTemp)}°`, 
-            weather:commonWeather}
+        return {
+            date: date, 
+            tempLow: lowTemp, 
+            tempHigh: highTemp, 
+            weather:commonWeather
+        }
 
     }
 
@@ -169,9 +187,9 @@ function populateApp(data) {
         tempDiv.className = 'tempdiv';
 
         let tempLow = document.createElement('div');
-        tempLow.innerHTML = data[i].tempLow;
+        tempLow.innerHTML = `${Math.round(data[i].tempLow)}°`;
         let tempHigh = document.createElement('div');
-        tempHigh.innerHTML = data[i].tempHigh;
+        tempHigh.innerHTML = `${Math.round(data[i].tempHigh)}°`;
 
         tempDiv.appendChild(tempLow);
         tempDiv.appendChild(tempHigh);
@@ -188,11 +206,16 @@ document.addEventListener('submit', async function(e) {
     try {
         let data = await Promise.all([getFiveDayData(searchInput.value), getCurrentDayData(searchInput.value)])
 
-        let dataObj = parseFiveDayData(data[0]);
+        dataObj = parseFiveDayData(data[0]);
         let currentDayDataObj = parseCurrentDayData(data[1]);
         dataObj.unshift(currentDayDataObj);
-        console.log(dataObj);
-        populateApp(dataObj);
+
+        if (units[1].checked) {
+            changeUnit(dataObj)
+        } else {
+            populateApp(dataObj);
+        }
+        
         document.querySelector('.errormessage').innerHTML = '';
     } catch(err) {
         document.querySelector('.errormessage').innerHTML = `Location not found.
@@ -200,6 +223,9 @@ document.addEventListener('submit', async function(e) {
     }
 });
 
+units.forEach(unit => {
+    unit.addEventListener('change', changeUnit)
+}); 
 
 
 // fetch('https://api.openweathermap.org/data/2.5/weather?q=chicago&units=imperial&appid=b5a14a7cc940d71738c874058413abb4')

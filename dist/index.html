@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
-    <script src="main.js" defer></script>
+    <!-- <script src="main.js" defer></script> -->
 </head>
 <body>
 
@@ -20,13 +20,15 @@
             </div>
 
             <div class="units">
-                <label for="unit">F°:<input type="radio" name="unit" id="unit" value="imperial"></label>
-                <label for="unit">C°:<input type="radio" name="unit" id="unit" value="metric"></label>
+                <label for="imperial">F°:<input type="radio" name="unit" id="imperial" value="imperial" checked></label>
+                <label for="metric">C°:<input type="radio" name="unit" id="metric" value="metric"></label>
             </div>
         </form>
         <div class="forecast">
         </div>
     </div>
+
+    <script src="main.js"></script>
 </body>
 
 </html>
