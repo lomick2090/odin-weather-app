@@ -9,16 +9,21 @@
 <body>
 
     <div class="page">
-        <div>
+        <form>
 
             <div class="errormessage"></div>
             <h1>5 Day Forecast</h1>
             <div>
                 <label for="city">City: <input type="text" id="city" name="city"></label>
         
-                <button>Submit</button>
+                <button id="submit">Submit</button>
             </div>
-        </div>
+
+            <div class="units">
+                <label for="unit">F°:<input type="radio" name="unit" id="unit" value="imperial"></label>
+                <label for="unit">C°:<input type="radio" name="unit" id="unit" value="metric"></label>
+            </div>
+        </form>
         <div class="forecast">
         </div>
     </div>
