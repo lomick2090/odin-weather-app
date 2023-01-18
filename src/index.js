@@ -188,11 +188,11 @@ submitButton.addEventListener('click', async function() {
 
         let dataObj = parseFiveDayData(data[0]);
         let currentDayDataObj = parseCurrentDayData(data[1]);
-        dataObj.unshift(currentDayDataObj)
-        console.log(dataObj)
+        dataObj.unshift(currentDayDataObj);
+        console.log(dataObj);
         populateApp(dataObj);
     } catch(err) {
-        console.log(err)
+        document.querySelector('.errormessage').innerHTML = 'City not found, please use city name, state code and country code divided by comma'
     }
 });
 

@@ -3,6 +3,18 @@ body {
     color: white;
 }
 
+h1 {
+    text-align: center;
+}
+
+
+.errormessage {
+    position: absolute;
+    left:15vw;
+    top: 10px;
+    color:red;
+}
+
 .page {
     display:flex;
     flex-direction: column;
