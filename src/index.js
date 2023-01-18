@@ -1,6 +1,6 @@
 const submitButton = document.querySelector('button');
 const searchInput = document.getElementById('city');
-const forecast = document.querySelector('.forecast')
+const forecast = document.querySelector('.forecast');
 
 async function getFiveDayData(city) {
     let data = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=b5a14a7cc940d71738c874058413abb4`)
@@ -24,7 +24,7 @@ async function getCurrentDayData(city) {
 
 function parseCurrentDayData(data) {
 
-    let date = 'today';
+    let date = 'Today';
     let tempLow = `${Math.round(data.main.temp_min)}°`;
     let tempHigh = `${Math.round(data.main.temp_max)}°`;
     let weather = data.weather[0].icon;
@@ -182,7 +182,9 @@ function populateApp(data) {
     }
 }
 
-submitButton.addEventListener('click', async function() { 
+document.addEventListener('submit', async function(e) { 
+    e.preventDefault();
+
     try {
         let data = await Promise.all([getFiveDayData(searchInput.value), getCurrentDayData(searchInput.value)])
 
@@ -191,8 +193,10 @@ submitButton.addEventListener('click', async function() {
         dataObj.unshift(currentDayDataObj);
         console.log(dataObj);
         populateApp(dataObj);
+        document.querySelector('.errormessage').innerHTML = '';
     } catch(err) {
-        document.querySelector('.errormessage').innerHTML = 'City not found, please use city name, state code and country code divided by comma'
+        document.querySelector('.errormessage').innerHTML = `Location not found.
+        Search must be in the form of "City", "City, State" or "City, Country"`
     }
 });
 
