@@ -34,3 +34,15 @@ body {
     justify-content: space-between;
     gap: 40px;
 }
+
+@media (max-width: 1225px) {
+    .forecast {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .page {
+        gap: 15px;
+    }
+
+}
